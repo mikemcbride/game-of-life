@@ -8,6 +8,11 @@ body {
     width: 100vw;
 }
 
+h1 {
+    margin: .5em 0;
+    font-size: 1.5rem;
+}
+
 .actions {
     align-items: center;
     display: flex;
@@ -16,5 +21,14 @@ body {
 }
 
 .actions button {
-    margin: 0 .5rem;
+    margin-right: .5rem;
+}
+
+.actions a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+.actions a:hover {
+    text-decoration: underline;
 }
