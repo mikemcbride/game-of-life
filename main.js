@@ -14,21 +14,32 @@ canvas.setAttribute('height', canvasSize)
 canvas.setAttribute('width', canvasSize)
 
 // set up variables
+// global variable to allow stopping the game mid-play
 const resolution = 10 // 10px per square
 const colRowCount = Math.floor(canvasSize / resolution) // need an even number for count of columns/rows
 let cols = colRowCount
 let rows = colRowCount
 let grid = make2DArray(cols, rows)
+window.GAME_IS_STOPPED = null
+window.GAME_BOARD = [...grid]
 const playButton = document.getElementById('play')
 const resetButton = document.getElementById('reset')
 
 setupGame({ grid, cols, rows, resolution, ctx })
 
 playButton.addEventListener('click', () => {
-    console.log('play clicked')
-    play({ grid, cols, rows, resolution, ctx })
+    if (window.GAME_IS_STOPPED === false) {
+        window.GAME_IS_STOPPED = true
+        playButton.innerText = 'Resume'
+    } else {
+        window.GAME_IS_STOPPED = false
+        playButton.innerText = 'Stop'
+        play({ grid: window.GAME_BOARD, cols, rows, resolution, ctx })
+    }
 })
 resetButton.addEventListener('click', () => {
+    window.GAME_IS_STOPPED = null
+    playButton.innerText = 'Play'
     setupGame({ grid, cols, rows, resolution, ctx })
 })
 
@@ -48,9 +59,10 @@ function play(opts) {
     let strGrid = JSON.stringify(opts.grid)
     let strNext = JSON.stringify(next)
     const didChange = strGrid !== strNext
-    if (didChange) {
-        opts.grid = next
+    if (didChange && window.GAME_IS_STOPPED === false) {
         setTimeout(() => {
+            opts.grid = next
+            window.GAME_BOARD = next
             draw(opts)
             play(opts)
         }, 100)
