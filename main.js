@@ -50,6 +50,7 @@ function setupGame(opts) {
             opts.grid[i][j] = Math.random() < .1 ? 1 : 0
         }
     }
+    window.GAME_BOARD = opts.grid
     // draw initial grid
     draw(opts)
 }
