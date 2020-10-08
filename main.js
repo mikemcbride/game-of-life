@@ -50,6 +50,10 @@ function setupGame(opts) {
             opts.grid[i][j] = Math.random() < .1 ? 1 : 0
         }
     }
+    // our initial options will be a grid that has a ton of stuff that will immediately go away.
+    // let's just clear those out before drawing.
+    let next = getNext(opts)
+    opts.grid = next
     window.GAME_BOARD = opts.grid
     // draw initial grid
     draw(opts)
